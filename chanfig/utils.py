@@ -111,37 +111,37 @@ def get_annotations(  # pylint: disable=all
     if isinstance(obj, type):
         # class
         ann = getattr(obj, "__annotations__", None)
-        obj_globalns = None
+        obj_globalns = {}
         module_name = getattr(obj, "__module__", None)
         if module_name:
             module = sys.modules.get(module_name, None)
             if module:
-                obj_globalns = getattr(module, "__dict__", None)
+                obj_globalns = getattr(module, "__dict__", {})
         obj_localns = dict(vars(obj))
         unwrap = obj
     elif isinstance(obj, ModuleType):
         # module
         ann = getattr(obj, "__annotations__", None)
-        obj_globalns = getattr(obj, "__dict__")
-        obj_localns = None
+        obj_globalns = getattr(obj, "__dict__", {})
+        obj_localns = {}
         unwrap = None
     elif callable(obj):
         # this includes types.Function, types.BuiltinFunctionType,
         # types.BuiltinMethodType, functools.partial, functools.singledispatch,
         # "class funclike" from Lib/test/test_inspect... on and on it goes.
         ann = getattr(obj, "__annotations__", None)
-        obj_globalns = getattr(obj, "__globals__", None)
-        obj_localns = None
+        obj_globalns = getattr(obj, "__globals__", {})
+        obj_localns = {}
         unwrap = obj
     else:
         # obj
         ann = getattr(type(obj), "__annotations__", None)
-        obj_globalns = None
+        obj_globalns = {}
         module_name = getattr(obj, "__module__", None)
         if module_name:
             module = sys.modules.get(module_name, None)
             if module:
-                obj_globalns = getattr(module, "__dict__", None)
+                obj_globalns = getattr(module, "__dict__", {})
         obj_localns = dict(vars(obj))
         unwrap = obj
 
